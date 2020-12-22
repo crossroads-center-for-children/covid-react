@@ -1,17 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+// import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { Provider } from 'react-redux';
+import 'fontsource-roboto';
+
+import configureStore from './store/configureStore';
+
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './sass/index.scss';
+
+// const link = createHttpLink({ uri: '/graphql' });
+// const cache = new InMemoryCache();
+
+// const client = new ApolloClient({
+//   cache,
+//   link,
+// });
+
+const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <BrowserRouter>
+        {/* <ApolloProvider client={client}> */}
+        <App />
+        {/* </ApolloProvider> */}
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

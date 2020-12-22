@@ -3,12 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "babel-plugin-import": "^1.13.3",
+    "bcryptjs": "^2.4.3",
+    "customize-cra": "^1.0.0",
+    "fontsource-roboto": "^3.1.5",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.8",
+    "node-sass": "^4.14.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

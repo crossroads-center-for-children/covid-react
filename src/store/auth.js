@@ -22,10 +22,12 @@ export const reset = () => async dispatch => {
 export const login = ({ identifier, password }) => async dispatch => {
   const endpoint = '/auth/local';
   const res = await axios.post(`${root}${endpoint}`, { identifier, password });
-  const { jwt, user } = await res.data;
+
+  const { jwt, user } = (await res).data;
   localStorage.setItem('token', jwt);
   dispatch(setToken(jwt));
   dispatch(setUser(user));
+  return jwt;
 };
 
 export const validateToken = token => async dispatch => {

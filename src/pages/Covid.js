@@ -1,104 +1,113 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Box, Button, Checkbox, Paper, TextField, Typography } from '@material-ui/core';
 import Question from '../components/Question';
-import { handleResponse } from '../lib/response';
 import puzzlepiece from '../puzzlepiece.png';
 import { navbarHeight } from '../components/Navbar';
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_QUESTIONNAIRE_BY_TYPE } from '../graphql/queries';
+import { CREATE_RESPONSE } from '../graphql/mutations';
+import { setDefaultAnswers } from '../store/response';
 
 export default function Covid() {
   const history = useHistory();
-  const user = useSelector(state => state.auth.user) || false;
-  const [summary, setSummary] = useState({});
-  const [questions, setQuestions] = useState([]);
+  const dispatch = useDispatch();
 
-  const root = process.env.API_URL || 'http://localhost:1337';
+  const user = useSelector(state => state.auth.user) || false;
   const response = useSelector(state => state.response);
 
-  const date = new Date();
-  const yearIdx = date.getYear() + 1900;
-  const dateIdx = date.getDate();
-  const monthIdx = date.getMonth() + 1;
+  const [questions, setQuestions] = useState([]);
 
-  useEffect(() => {
-    if (!user) history.push('/login');
-    if (user.type === 'admin') history.push('/admin');
-    if (
-      user.summary &&
-      user.summary[yearIdx] &&
-      user.summary[yearIdx][monthIdx] &&
-      user.summary[yearIdx][monthIdx][dateIdx]
-    )
-      history.push('/dashboard');
-  }, [user, history, yearIdx, dateIdx, monthIdx]);
+  const { loading, error, data } = useQuery(GET_QUESTIONNAIRE_BY_TYPE, {
+    variables: { type: 'parent' },
+  });
 
-  useEffect(() => {
-    const url = `${root}/graphql`;
+  const [createResponse] = useMutation(CREATE_RESPONSE, {
+    onCompleted(data) {
+      const { id } = data.createResponse;
 
-    (async () => {
-      const data = await axios.post(url, {
-        query: `query ($type:String){
-              questionnaires(where:{type:$type}){
-                id
-                questions {
-                  id
-                  question
-                  type
-                }
-              }
-            }`,
-        variables: {
-          type: user.type,
-        },
+      history.push({
+        pathname: '/covid/processing',
+        state: { user, response, responseId: id },
       });
+    },
+    onError(err) {
+      console.log(err);
+    },
+  });
 
-      const questions = (await data).data.data.questionnaires[0].questions;
+  useEffect(() => {
+    if (user.type === 'admin') history.push('/admin');
+  }, [user, history]);
+
+  useEffect(() => {
+    if (data) {
+      const questions = [data.questionnaire.questions[0], { type: 'date' }, ...data.questionnaire.questions.slice(1)];
       setQuestions(questions);
-    })();
-  }, [root, user]);
+      console.log(questions);
+      dispatch(setDefaultAnswers(questions));
+    }
+  }, [data]);
 
-  const handleSubmit = async () => {
-    const success = await handleResponse(user.id, response);
-    if (success) history.push('/success');
+  if (loading || !user) return null;
+
+  if (error) console.log(error.message);
+
+  const handleSubmit = () => {
+    createResponse({
+      variables: {
+        date: new Date(response.date),
+        user: user.id,
+        student: response.relevant.id,
+      },
+    });
   };
-
-  if (questions.length === 0) return null;
 
   return (
     <Box
       style={{
-        width: '100vw',
+        // width: '100vw',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: navbarHeight,
-        paddingTop: 20,
-        backgroundColor: '#f5f5f5',
+        padding: 10,
       }}>
       <Paper
         style={{
           minWidth: 300,
-          maxWidth: 500,
+          maxWidth: 600,
           padding: 20,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <img src={puzzlepiece} style={{ width: 150 }} />
-        <Typography variant='h5' style={{ fontWeight: 'bold', fontFamily: 'Roboto', textAlign: 'center' }}>
+        <img src={puzzlepiece} style={{ width: 100 }} />
+        <Typography variant='h6' style={{ fontWeight: 'bold', fontFamily: 'Roboto', textAlign: 'center' }}>
           COVID-19 Questionnaire
         </Typography>
         <Box>
           {questions.map(question => (
-            <Question question={question} />
+            <Question question={question} user={user} />
           ))}
         </Box>
 
-        <Button onClick={handleSubmit} variant='contained' fullWidth size='large' color='primary'>
+        <Button
+          onClick={handleSubmit}
+          variant='contained'
+          fullWidth
+          size='large'
+          color='primary'
+          disabled={
+            response.hasOwnProperty('answers') &&
+            (response.answers['5fee247835e1c2536bbb0ed1'] === true ||
+              response.answers['5fee270e50c8a355f102a23d'] === true)
+              ? false
+              : true
+          }>
           Submit
         </Button>
       </Paper>

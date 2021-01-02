@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, TextField, Typography } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../../puzzlepiece.png';
-import { login } from '../../store/auth';
+import { LOGIN_USER } from '../../graphql/mutations';
+
+import { setUser } from '../../store/auth';
+
+import { useMutation } from '@apollo/client';
+
 import { navbarHeight } from '../../components/Navbar';
 
 const useStyles = makeStyles(theme => ({
@@ -41,26 +46,56 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Login() {
-  const [identifier, setIdentifier] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const classes = useStyles();
   const history = useHistory();
 
+  const user = useSelector(state => state.auth.user) || false;
+
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
-    let token;
+  const [login] = useMutation(LOGIN_USER, {
+    onCompleted(data) {
+      console.log(data);
+      const {
+        id,
+        firstName,
+        lastName,
+        fullName,
+        email,
+        phone,
+        children,
+        responses,
+        responsesSummary,
+        token,
+      } = data.login;
 
-    (async () => {
-      token = dispatch(login({ identifier, password }));
-      console.log(token);
-    })();
+      const user = { id, firstName, lastName, fullName, email, phone, children, responses, responsesSummary };
 
-    if (token) {
-      console.log(token);
-      history.push('/redirect');
+      localStorage.setItem('token', token);
+
+      dispatch(setUser(user));
+
+      console.log(user);
+    },
+  });
+
+  useEffect(() => {
+    if (user) {
+      history.push('/dashboard');
     }
+  }, [user, history]);
+
+  const handleSubmit = () => {
+    console.log('hitting before mutation');
+    login({
+      variables: {
+        email,
+        password,
+      },
+    });
   };
 
   return (
@@ -73,9 +108,9 @@ export default function Login() {
           <TextField
             variant='outlined'
             placeholder='Email or username'
-            value={identifier}
+            value={email}
             style={{ width: '100%', margin: 5 }}
-            onChange={e => setIdentifier(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
           <TextField
             variant='outlined'

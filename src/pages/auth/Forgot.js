@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, TextField, Typography } from '@material-ui/core';
-import { getUserFromEmail, setResetPasswordToken } from '../../lib/user';
+import { getUserFromEmail } from '../../lib/user';
 import { navbarHeight } from '../../components/Navbar';
 import { useHistory } from 'react-router-dom';
 
@@ -15,9 +15,9 @@ export default function Forgot() {
       try {
         const userId = await getUserFromEmail(email);
         console.log(userId);
-        const { resetToken } = await setResetPasswordToken(userId);
-        history.push(`/reset/${resetToken}`);
-        console.log(resetToken);
+        // const { resetToken } = await setResetPasswordToken(userId);
+        // history.push(`/reset/${resetToken}`);
+        // console.log(resetToken);
       } catch (err) {
         console.log(err);
         setErrors(err);

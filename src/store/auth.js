@@ -1,5 +1,5 @@
 import axios from 'axios';
-const root = process.env.API_URL || 'http://localhost:1337';
+const root = process.env.API_URL || 'http://localhost:5000';
 const SET_TOKEN = 'auth/SET_TOKEN';
 const SET_USER = 'auth/SET_USER';
 const RESET_STATE = 'auth/RESET';
@@ -20,9 +20,10 @@ export const reset = () => async dispatch => {
 };
 
 export const login = ({ identifier, password }) => async dispatch => {
+  console.log(identifier, password);
   const endpoint = '/auth/local';
   const res = await axios.post(`${root}${endpoint}`, { identifier, password });
-
+  console.log(res);
   const { jwt, user } = (await res).data;
   localStorage.setItem('token', jwt);
   dispatch(setToken(jwt));
@@ -30,7 +31,8 @@ export const login = ({ identifier, password }) => async dispatch => {
   return jwt;
 };
 
-export const validateToken = token => async dispatch => {
+export const validateToken = async token => {
+  console.log('going to validate token');
   const endpoint = '/users/me';
 
   try {
@@ -42,15 +44,56 @@ export const validateToken = token => async dispatch => {
 
     const user = await res.data;
 
-    dispatch(setToken(token));
-    dispatch(setUser(user));
+    console.log(user);
 
-    return true;
+    return { valid: true, id: user.id };
   } catch (err) {
-    dispatch(reset());
+    return { valid: false };
+  }
+};
 
+export const loadUser = token => async dispatch => {
+  console.log(token);
+  const res = await validateToken(token);
+
+  const { valid, id } = res;
+
+  if (valid) {
+    console.log(valid);
+    console.log(id);
+    const user = await getUser(id);
+    console.log(user);
+    dispatch(setUser(user));
+    return true;
+  } else {
     return false;
   }
+};
+
+export const getUser = async id => {
+  const res = await axios.post(`${root}/graphql`, {
+    query: `query ($id:ID){
+      users(where:{id:$id}){
+        id
+        firstName
+        lastName
+        email
+        summary
+        fullName
+        type
+        children{
+          id
+          firstName
+          lastName
+        }
+      }
+    }`,
+    variables: {
+      id: id,
+    },
+  });
+
+  return res.data.data.users[0];
 };
 
 export default function authReducer(state = initialState, action) {

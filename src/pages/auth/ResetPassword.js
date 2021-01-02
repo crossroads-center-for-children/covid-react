@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, Typography, TextField } from '@material-ui/core';
+
 import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loadUser } from '../../store/auth';
+
 import { navbarHeight } from '../../components/Navbar';
-import { getUserFromResetToken, resetPassword } from '../../lib/user';
+import { validateResetPasswordToken, resetPassword } from '../../lib/user';
 import pluto from '../../error.svg';
 
 export default function Reset() {
@@ -13,10 +17,13 @@ export default function Reset() {
 
   const { token } = useParams();
 
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     (async () => {
       try {
-        const userId = await getUserFromResetToken(token);
+        const userId = await validateResetPasswordToken(token);
         console.log(userId);
         if (userId) setUserId(userId);
       } catch (err) {
@@ -27,7 +34,9 @@ export default function Reset() {
 
   const handleClick = async () => {
     if (password && password === passwordConfirm) {
-      await resetPassword(userId, password);
+      const { user, jwt } = await resetPassword(password, passwordConfirm, token);
+      console.log(user, jwt);
+      dispatch(loadUser(jwt));
     }
   };
 

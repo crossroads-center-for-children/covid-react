@@ -1,49 +1,77 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Switch, useHistory, withRouter, useParams, useLocation } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box } from '@material-ui/core';
-import { validateToken } from './store/auth';
+import { useMutation } from '@apollo/client';
+import { VALIDATE_TOKEN } from './graphql/mutations';
+
+import { setUser } from './store/auth';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 
-import Covid from './pages/Covid';
+import Pages from './pages/Pages';
+
 import Index from './pages/Index';
-import Login from './pages/auth/Login';
-import Admin from './pages/Admin';
-import Redirect from './pages/auth/Redirect';
-import Success from './pages/Success';
-import Navbar from './components/Navbar';
-import Reset from './pages/auth/Reset';
+import ResetPassword from './pages/auth/ResetPassword';
+import SetPassword from './pages/auth/SetPassword';
 import Forgot from './pages/auth/Forgot';
 import CheckEmail from './pages/auth/CheckEmail';
+import Covid from './pages/Covid';
+import Login from './pages/auth/Login';
+import Admin from './pages/admin/Admin';
+import Pass from './pages/Pass';
+import Fail from './pages/Fail';
+import Dashboard from './pages/Dashboard';
+import Processing from './pages/Processing';
+
+import AdminRoute from './hoc/AdminRoute';
+
+import Navbar, { navbarHeight } from './components/Navbar';
 
 function App() {
-  const history = useHistory();
   const dispatch = useDispatch();
-  console.log(useParams());
-  const location = useLocation();
+
+  const [validateToken] = useMutation(VALIDATE_TOKEN, {
+    onCompleted(data) {
+      console.log(data);
+      const {
+        id,
+        firstName,
+        lastName,
+        fullName,
+        email,
+        phone,
+        type,
+        children,
+        responses,
+        responsesSummary,
+      } = data.validateToken;
+
+      const user = { id, firstName, lastName, fullName, email, phone, type, children, responses, responsesSummary };
+
+      dispatch(setUser(user));
+    },
+    onError(err) {
+      console.log(err);
+    },
+  });
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token && dispatch(validateToken(token))) history.push('/redirect');
-    else if (!location.pathname.includes('reset')) {
-      history.push('/login');
-    }
-  }, []);
+    console.log('going to validate token', token);
+    if (token) validateToken({ variables: { token } });
+  }, [validateToken]);
 
   return (
     <ThemeProvider theme={theme}>
       <Navbar />
       <Switch>
         <Route exact path='/login' component={Login} />
-        <Route exact path='/covid' component={Covid} />
-        <Route exact path='/admin' component={Admin} />
-        <Route exact path='/redirect' component={Redirect} />
-        <Route exact path='/success' component={Success} />
-        <Route path='/reset/:token' component={Reset} />
+        <Route path='/set/:token' component={SetPassword} />
+        <Route path='/reset/:token' component={ResetPassword} />
         <Route path='/forgot' component={Forgot} />
         <Route exact path='/forgot/check-email' component={CheckEmail} />
+        <Route component={Pages} />
         <Route path='/' component={Index} />
       </Switch>
     </ThemeProvider>

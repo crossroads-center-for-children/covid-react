@@ -7,7 +7,7 @@ import 'fontsource-roboto';
 
 import configureStore from './store/configureStore';
 
-import App from './App';
+import AppWrapper from './App';
 import './sass/index.scss';
 
 const link = createHttpLink({ uri: '/graphql' });
@@ -25,7 +25,7 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <ApolloProvider client={client}>
-          <App />
+          <AppWrapper />
         </ApolloProvider>
       </BrowserRouter>
     </Provider>

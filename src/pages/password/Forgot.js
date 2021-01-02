@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, TextField, Typography } from '@material-ui/core';
 import { getUserFromEmail } from '../../lib/user';
 import { navbarHeight } from '../../components/Navbar';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 export default function Forgot() {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState([]);
 
-  const history = useHistory();
+  // const history = useHistory();
 
   const handleSubmit = async () => {
     if (email) {

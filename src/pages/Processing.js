@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, Typography } from '@material-ui/core';
 import { useLocation, useHistory } from 'react-router-dom';
-import processing from '../processing-responses.svg';
+import processing from '../images/processing-responses.svg';
 import { handleResponse } from '../lib/response';
 import { navbarHeight } from '../components/Navbar';
 import GridLoader from 'react-spinners/GridLoader';

@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, Typography, TextField } from '@material-ui/core';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/client';
 
 import { setUser } from '../../store/auth';
 import { navbarHeight } from '../../components/Navbar';
 import { SET_PASSWORD, VALIDATE_RESET_PASSWORD_TOKEN } from '../../graphql/mutations';
-import error from '../../error.svg';
+import error from '../../images/error.svg';
 
-export default function SetPassword() {
+export default function Set() {
   const [localPassword, setLocalPassword] = useState('');
   const [localPasswordConfirm, setLocalPasswordConfirm] = useState('');
   const [tokenIsValid, setTokenIsValid] = useState(null);
 
   const { token } = useParams();
 
-  const history = useHistory();
+  // const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [validateResetPasswordToken] = useMutation(VALIDATE_RESET_PASSWORD_TOKEN, {
@@ -50,7 +51,7 @@ export default function SetPassword() {
 
       dispatch(setUser(user));
 
-      history.push('/dashboard');
+      navigate('/dashboard');
     },
   });
 

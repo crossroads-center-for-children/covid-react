@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { Box, Button, Checkbox, Paper, TextField, Typography } from '@material-ui/core';
-import Question from '../components/Question';
-import puzzlepiece from '../puzzlepiece.png';
-import { navbarHeight } from '../components/Navbar';
+import Question from '../../components/Question';
+import puzzlepiece from '../../images/puzzlepiece.png';
+import { navbarHeight } from '../../components/Navbar';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_QUESTIONNAIRE_BY_TYPE } from '../graphql/queries';
-import { CREATE_RESPONSE } from '../graphql/mutations';
-import { setDefaultAnswers } from '../store/response';
+import { GET_QUESTIONNAIRE_BY_TYPE } from '../../graphql/queries';
+import { CREATE_RESPONSE } from '../../graphql/mutations';
+import { setDefaultAnswers } from '../../store/response';
 
 export default function Covid() {
-  const history = useHistory();
+  // const history = useHistory();
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.auth.user) || false;
@@ -27,19 +27,19 @@ export default function Covid() {
     onCompleted(data) {
       const { id } = data.createResponse;
 
-      history.push({
-        pathname: '/covid/processing',
-        state: { user, response, responseId: id },
-      });
+      // history.push({
+      //   pathname: '/covid/processing',
+      //   state: { user, response, responseId: id },
+      // });
     },
     onError(err) {
       console.log(err);
     },
   });
 
-  useEffect(() => {
-    if (user.type === 'admin') history.push('/admin');
-  }, [user, history]);
+  // useEffect(() => {
+  //   if (user.type === 'admin') history.push('/admin');
+  // }, [user, history]);
 
   useEffect(() => {
     if (data) {

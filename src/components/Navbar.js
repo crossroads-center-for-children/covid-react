@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppBar, Box, Button, Link, Typography } from '@material-ui/core';
-import crossroads from '../crossroads.svg';
+import crossroads from '../images/crossroads.svg';
 
 export const navbarHeight = 50;
 

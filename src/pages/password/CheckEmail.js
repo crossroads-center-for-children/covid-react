@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Paper, Typography } from '@material-ui/core';
-import pluto from '../../checkemail.svg';
+import pluto from '../../images/checkemail.svg';
 
 export default function CheckEmail() {
   return (

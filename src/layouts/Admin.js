@@ -2,20 +2,19 @@ import React from 'react';
 import { useHistory, Route, Routes, Switch } from 'react-router-dom';
 import { Box, Button, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 
-import { navbarHeight } from '../../components/Navbar';
-import Dashboard from './Dashboard';
+import { navbarHeight } from '../components/Navbar';
 
-import { useStyles } from '../../layouts/styles/Admin.styles';
-import logo from '../../images/puzzlepiece.png';
+import { useStyles } from './styles/Admin.styles';
+import logo from '../images/puzzlepiece.png';
 
 export default function Admin({ user }) {
   const classes = useStyles();
 
   const listItems = [
-    ['📊', 'Dashboard', '/admin/dashboard', false],
-    ['🗄️', 'Responses', '/admin/responses', false],
-    ['🚌', 'Students', '/admin/students', false],
-    ['🧑‍⚕️', 'Clinical Staff', '/admin/clinical-staff', false],
+    ['📊', 'Dashboard', '/a/admin', false],
+    ['🗄️', 'Responses', '/a/admin/responses', false],
+    ['🚌', 'Students', '/a/admin/students', false],
+    ['🧑‍⚕️', 'Staff', '/a/admin/staff', false],
   ];
 
   return (
@@ -56,9 +55,6 @@ export default function Admin({ user }) {
           </List>
         </Box>
       </Drawer>
-      <Routes>
-        <Route exact path='/admin/dashboard' component={Dashboard} />
-      </Routes>
     </Box>
   );
 }

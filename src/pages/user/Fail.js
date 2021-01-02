@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Paper, Typography } from '@material-ui/core';
-import error from '../error.svg';
-import { navbarHeight } from '../components/Navbar';
+import error from '../../images/error.svg';
+import { navbarHeight } from '../../components/Navbar';
 
-export default function Pass() {
+export default function Fail() {
   const response = useSelector(state => state.response);
   const user = useSelector(state => state.auth.user);
 
@@ -13,7 +14,8 @@ export default function Pass() {
   const [relevant, setRelevant] = useState(null);
   const [date, setDate] = useState(null);
 
-  const history = useHistory();
+  // const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (response.hasOwnProperty('relevant') && user.hasOwnProperty('type')) {
@@ -21,9 +23,9 @@ export default function Pass() {
       setDate(new Date(response.date).toLocaleDateString());
       setType(user.type);
     } else {
-      history.push('/dashboard');
+      navigate('/dashboard');
     }
-  }, [response, history, user]);
+  }, [response, navigate, user]);
 
   if (!type) return null;
 

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, TextField, Typography } from '@material-ui/core';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from '../../puzzlepiece.png';
-import { LOGIN_USER } from '../../graphql/mutations';
+import logo from '../images/puzzlepiece.png';
+import { LOGIN_USER } from '../graphql/mutations';
 
-import { setUser } from '../../store/auth';
+import { setUser } from '../store/auth';
 
 import { useMutation } from '@apollo/client';
 
-import { navbarHeight } from '../../components/Navbar';
+import { navbarHeight } from '../components/Navbar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,9 +50,9 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   const classes = useStyles();
-  const history = useHistory();
+  // const history = useHistory();
 
-  const user = useSelector(state => state.auth.user) || false;
+  // const user = useSelector(state => state.auth.user) || false;
 
   const dispatch = useDispatch();
 
@@ -82,11 +82,11 @@ export default function Login() {
     },
   });
 
-  useEffect(() => {
-    if (user) {
-      history.push('/dashboard');
-    }
-  }, [user, history]);
+  // useEffect(() => {
+  //   if (user) {
+  //     history.push('/dashboard');
+  //   }
+  // }, [user, history]);
 
   const handleSubmit = () => {
     console.log('hitting before mutation');

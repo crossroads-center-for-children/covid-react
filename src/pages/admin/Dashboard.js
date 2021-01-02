@@ -6,7 +6,7 @@ import { drawerWidth } from '../../layouts/styles/Admin.styles';
 export default function Responses() {
   return (
     <Box style={{ marginLeft: drawerWidth, width: '100vw' }}>
-      <Typography>Responses</Typography>
+      <Typography>Dash</Typography>
     </Box>
   );
 }

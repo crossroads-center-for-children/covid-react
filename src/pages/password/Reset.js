@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, Typography, TextField } from '@material-ui/core';
 
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loadUser } from '../../store/auth';
 
 import { navbarHeight } from '../../components/Navbar';
 import { validateResetPasswordToken, resetPassword } from '../../lib/user';
-import pluto from '../../error.svg';
+import pluto from '../../images/error.svg';
 
 export default function Reset() {
   const [password, setPassword] = useState('');
@@ -17,7 +17,7 @@ export default function Reset() {
 
   const { token } = useParams();
 
-  const history = useHistory();
+  // const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {

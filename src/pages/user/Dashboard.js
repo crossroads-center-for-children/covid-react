@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@material-ui/core';
 
-import { navbarHeight } from '../components/Navbar';
+import { navbarHeight } from '../../components/Navbar';
 
 export default function Dashboard() {
-  const history = useHistory();
-  const user = useSelector(state => state.auth.user);
-
-  if (!user) history.push('/login');
   return (
     <Box
       style={{

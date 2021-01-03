@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, Typography } from '@material-ui/core';
-import { useLocation, useHistory } from 'react-router-dom';
-import processing from '../images/processing-responses.svg';
-import { handleResponse } from '../lib/response';
-import { navbarHeight } from '../components/Navbar';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { handleResponse } from '../../lib/response';
+import { navbarHeight } from '../../components/Navbar';
 import GridLoader from 'react-spinners/GridLoader';
 import { useMutation } from '@apollo/client';
 
 export default function Processing() {
   const location = useLocation();
   const { user, response, responseId } = location.state;
-  const history = useHistory();
+  const navigate = useNavigate();
   const [showLoading, setShowLoading] = useState(true);
   const [isCleared, setIsCleared] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -31,9 +31,9 @@ export default function Processing() {
     })();
   });
 
-  if (!showLoading && isCleared && success) history.push('/pass');
-  if (!showLoading && !isCleared && success) history.push('/fail');
-  if (!showLoading && !success) history.push('/error');
+  if (!showLoading && isCleared && success) navigate('/a/covid/pass');
+  if (!showLoading && !isCleared && success) navigate('/a/covid/fail');
+  if (!showLoading && !success) navigate('/a/covid/error');
 
   return (
     <Box

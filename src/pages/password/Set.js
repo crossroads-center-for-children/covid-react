@@ -15,6 +15,7 @@ export default function Set() {
   const [tokenIsValid, setTokenIsValid] = useState(null);
 
   const { token } = useParams();
+  console.log('token', token);
 
   // const history = useHistory();
   const navigate = useNavigate();
@@ -51,7 +52,9 @@ export default function Set() {
 
       dispatch(setUser(user));
 
-      navigate('/dashboard');
+      window.location.reload();
+
+      navigate('/a');
     },
   });
 

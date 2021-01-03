@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useHistory } from 'react-router-dom';
-import { Box, Button, Checkbox, Paper, TextField, Typography } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Checkbox, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import Question from '../../components/Question';
 import puzzlepiece from '../../images/puzzlepiece.png';
 import { navbarHeight } from '../../components/Navbar';
@@ -9,15 +9,18 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_QUESTIONNAIRE_BY_TYPE } from '../../graphql/queries';
 import { CREATE_RESPONSE } from '../../graphql/mutations';
 import { setDefaultAnswers } from '../../store/response';
+import { handleResponse } from '../../lib/response';
+import GridLoader from 'react-spinners/GridLoader';
 
 export default function Covid() {
-  // const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.auth.user) || false;
   const response = useSelector(state => state.response);
-
+  const [showLoading, setShowLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const answers = useSelector(state => state.response.answers);
 
   const { loading, error, data } = useQuery(GET_QUESTIONNAIRE_BY_TYPE, {
     variables: { type: 'parent' },
@@ -27,69 +30,94 @@ export default function Covid() {
     onCompleted(data) {
       const { id } = data.createResponse;
 
-      // history.push({
-      //   pathname: '/covid/processing',
-      //   state: { user, response, responseId: id },
-      // });
+      navigate('/a/covid/processing', { state: { user, response, responseId: id } });
     },
     onError(err) {
       console.log(err);
     },
   });
 
-  // useEffect(() => {
-  //   if (user.type === 'admin') history.push('/admin');
-  // }, [user, history]);
-
   useEffect(() => {
     if (data) {
       const questions = [data.questionnaire.questions[0], { type: 'date' }, ...data.questionnaire.questions.slice(1)];
       setQuestions(questions);
-      console.log(questions);
       dispatch(setDefaultAnswers(questions));
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   if (loading || !user) return null;
 
   if (error) console.log(error.message);
 
   const handleSubmit = () => {
-    createResponse({
-      variables: {
-        date: new Date(response.date),
-        user: user.id,
-        student: response.relevant.id,
-      },
-    });
+    setShowLoading(true);
+    initResponse();
   };
+
+  const initResponse = async () => {
+    const { isCleared, success } = await handleResponse({
+      date: new Date(response.date),
+      user: user,
+      student: response.relevant,
+      response,
+    });
+
+    console.log(isCleared, success);
+
+    if (isCleared && success) navigate('/a/covid/pass');
+    if (!isCleared && success) navigate('/a/covid/fail');
+    if (!success) navigate('/a/covid/error');
+  };
+
+  if (showLoading) {
+    return (
+      <Grid
+        container
+        direction='column'
+        justify='flex-start'
+        alignItems='center'
+        style={{
+          width: '100vw',
+          minHeight: `calc(100vh - 75px)`,
+          backgroundColor: '#171c28',
+          marginTop: 75,
+          paddingTop: 75,
+        }}>
+        <GridLoader loading={showLoading} size={30} color={'#B39DDB'} />
+      </Grid>
+    );
+  }
 
   return (
     <Box
       style={{
         // width: '100vw',
+        backgroundColor: '#171c28',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: navbarHeight,
-        padding: 10,
+        padding: 30,
+        paddingBottom: 50,
+        minHeight: `calc(100vh - ${navbarHeight}px - 80px)`,
       }}>
       <Paper
         style={{
-          minWidth: 300,
-          maxWidth: 600,
+          // minWidth: 300,
+          // maxWidth: 600,
+          maxHeight: '100%',
+          overflowY: 'auto',
           padding: 20,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <img src={puzzlepiece} style={{ width: 100 }} />
         <Typography variant='h6' style={{ fontWeight: 'bold', fontFamily: 'Roboto', textAlign: 'center' }}>
-          COVID-19 Questionnaire
+          COVID-19 Screener
         </Typography>
-        <Box>
+        <Box style={{ margin: 10 }}>
           {questions.map(question => (
             <Question question={question} user={user} />
           ))}

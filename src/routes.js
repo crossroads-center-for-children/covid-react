@@ -3,14 +3,21 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { AdminLayout, LoggedInLayout, MainLayout, UserLayout } from './layouts';
 
 import Login from './pages/Login';
-import { Covid, Fail, Pass, UserDashboard } from './pages/user';
+import { Covid, Processing, Fail, Pass, UserDashboard } from './pages/user';
 import { CheckEmail, ForgotPassword, ResetPassword, SetPassword } from './pages/password';
-import { AdminDashboard, Responses, Staff, Students } from './pages/admin';
+import { AdminDashboard, Parents, Responses, Staff, Students } from './pages/admin';
 
 const routes = (isLoggedIn, isAdmin) => [
   {
     path: '/a',
-    element: isLoggedIn ? <Outlet /> : <Navigate to='login' />,
+    element: isLoggedIn ? (
+      <>
+        <LoggedInLayout />
+        <Outlet />
+      </>
+    ) : (
+      <Navigate to='/login' />
+    ),
     children: [
       {
         path: 'admin',
@@ -20,21 +27,23 @@ const routes = (isLoggedIn, isAdmin) => [
             <Outlet />
           </>
         ) : (
-          <Navigate to='dashboard' />
+          <Navigate to='/a/dashboard' />
         ),
         children: [
           { path: '', element: <AdminDashboard /> },
           { path: 'responses', element: <Responses /> },
           { path: 'students', element: <Students /> },
           { path: 'staff', element: <Staff /> },
+          { path: 'parents', element: <Parents /> },
         ],
       },
-      { path: 'dashboard', element: !isAdmin ? <UserDashboard /> : <Navigate to='admin' /> },
+      { path: 'dashboard', element: !isAdmin ? <UserDashboard /> : <Navigate to='/a/admin' /> },
       {
         path: 'covid',
-        element: !isAdmin ? <Outlet /> : <Navigate to='/admin' />,
+        element: !isAdmin ? <Outlet /> : <Navigate to='/a/admin' />,
         children: [
           { path: '/', element: <Covid /> },
+          { path: 'processing', element: <Processing /> },
           { path: 'pass', element: <Pass /> },
           { path: 'fail', element: <Fail /> },
         ],
@@ -42,29 +51,77 @@ const routes = (isLoggedIn, isAdmin) => [
 
       {
         path: '/',
-        element: isAdmin ? <Navigate to='admin' /> : <Navigate to='dashboard' />,
+        element: isAdmin ? <Navigate to='/a/admin' /> : <Navigate to='/a/dashboard' />,
       },
     ],
   },
+  { path: '/dashboard', element: isLoggedIn ? <Navigate to='/a/dashboard' /> : <Navigate to='login' /> },
   {
     path: '/',
-    element: !isLoggedIn ? <MainLayout /> : <Navigate to='a' />,
+    element: !isLoggedIn ? (
+      <>
+        <MainLayout />
+        <Outlet />
+      </>
+    ) : (
+      <Navigate to='a' />
+    ),
     children: [
-      { path: 'login', element: <Login /> },
+      {
+        path: 'login',
+        element: (
+          <>
+            <Login />
+            <Outlet />
+          </>
+        ),
+      },
       {
         path: 'p',
         element: <Outlet />,
         children: [
-          { path: 'set', element: <SetPassword /> },
+          {
+            path: 'set/:token',
+            element: (
+              <>
+                <SetPassword />
+                <Outlet />
+              </>
+            ),
+          },
           {
             path: 'forgot',
             element: <Outlet />,
             children: [
-              { path: '/', element: <ForgotPassword /> },
-              { path: '/check-email', element: <CheckEmail /> },
+              {
+                path: '/',
+                element: (
+                  <>
+                    <ForgotPassword />
+                    <Outlet />
+                  </>
+                ),
+              },
+              {
+                path: '/check-email',
+                element: (
+                  <>
+                    <CheckEmail />
+                    <Outlet />
+                  </>
+                ),
+              },
             ],
           },
-          { path: 'reset', element: <ResetPassword /> },
+          {
+            path: 'reset',
+            element: (
+              <>
+                <ResetPassword />
+                <Outlet />
+              </>
+            ),
+          },
         ],
       },
       { path: '/', element: <Navigate to='login' /> },

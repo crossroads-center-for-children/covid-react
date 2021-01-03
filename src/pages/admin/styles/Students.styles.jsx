@@ -9,4 +9,8 @@ export const useStyles = makeStyles(theme => ({
     width: `calc(100vw = ${drawerWidth}px)`,
     height: `calc(100vh - ${navbarHeight}px)`,
   },
+
+  table: {
+    width: '100%',
+  },
 }));

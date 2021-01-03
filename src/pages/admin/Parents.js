@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Chip, Paper, Typography } from '@material-ui/core';
 import { useQuery } from '@apollo/client';
 import BeatLoader from 'react-spinners/BeatLoader';
+import Parents from '../../tables/Parents/Parents';
 
-import { GET_RESPONSES_LIMIT } from '../../graphql/queries';
+import { GET_PARENTS } from '../../graphql/queries';
 
 import { drawerWidth } from '../../layouts/styles/Admin.styles';
-import Responses from '../../tables/Responses/Responses';
+import { useStyles } from './styles/Students.styles';
+import { Link } from 'react-router-dom';
 
-export default function ResponsesPage() {
-  const { loading, error, data } = useQuery(GET_RESPONSES_LIMIT, { variables: { limit: 50 } });
+export default function ParentsPage() {
+  const classes = useStyles();
+  const { loading, error, data } = useQuery(GET_PARENTS, { variables: { type: 'parent' } });
 
   if (loading)
     return (
@@ -23,17 +26,17 @@ export default function ResponsesPage() {
   if (data) console.log(data);
 
   return (
-    <Box style={{ marginLeft: drawerWidth, width: '100vw' }}>
+    <Box className={classes.root}>
       <Typography variant='h5' style={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>
-        Responses
+        Parents
       </Typography>
 
       <Box>
-        {data.responses.length > 0 ? (
-          <Responses responses={data.responses} />
+        {data.users.length > 0 ? (
+          <Parents parents={data.users} />
         ) : (
           <Box>
-            <Typography>No responses were found.</Typography>
+            <Typography>No parents were found.</Typography>
           </Box>
         )}
       </Box>

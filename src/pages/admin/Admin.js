@@ -15,6 +15,7 @@ export default function Admin({ user }) {
     ['📊', 'Dashboard', '/admin/dashboard', false],
     ['🗄️', 'Responses', '/admin/responses', false],
     ['🚌', 'Students', '/admin/students', false],
+    ['👪', 'Parents', '/admin/parents', false],
     ['🧑‍⚕️', 'Clinical Staff', '/admin/clinical-staff', false],
   ];
 

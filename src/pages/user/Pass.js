@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// import { useHistory } from 'react-router-dom';
+
 import { useNavigate } from 'react-router-dom';
 
-import { Box, Button, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Paper, Typography } from '@material-ui/core';
 import checkmark from '../../images/checkmark.svg';
 import { navbarHeight } from '../../components/Navbar';
 
@@ -15,7 +15,6 @@ export default function Pass() {
   const [relevant, setRelevant] = useState(null);
   const [date, setDate] = useState(null);
 
-  // const history = useHistory();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,39 +30,41 @@ export default function Pass() {
   if (!type) return null;
 
   return (
-    <Box
+    <Grid
+      container
+      direction='column'
+      justify='flex-start'
+      alignItems='center'
       style={{
-        padding: 10,
-        display: 'flex',
-
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: navbarHeight,
+        width: '100vw',
+        minHeight: `calc(100vh - 75px)`,
+        backgroundColor: '#171c28',
+        marginTop: 75,
+        paddingTop: 75,
       }}>
-      <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 300,
-          padding: 20,
-        }}>
-        <img src={checkmark} style={{ width: 100, marginBottom: 20 }} />
+      <img src={checkmark} style={{ width: 100, marginBottom: 20 }} />
 
-        <Typography variant='h5' style={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>
-          All set!
+      <Typography
+        variant='h4'
+        style={{ fontWeight: 'bold', fontFamily: 'Roboto', textAlign: 'center', color: '#f5f5f5', marginTop: 20 }}>
+        All set!
+      </Typography>
+
+      <Paper style={{ fontFamily: 'Roboto', margin: 30, padding: 20 }}>
+        <Typography variant='body1'>{`${user.firstName},`}</Typography>
+        <br></br>
+
+        <Typography variant='body1' style={{ fontFamily: 'Roboto' }}>
+          {type === 'parent'
+            ? `${relevant.firstName} is cleared to come to Crossroads on ${date}.`
+            : `You are cleared to come to Crossroads on ${date}.`}
         </Typography>
 
         <br></br>
 
-        <Typography variant='body1' style={{ fontFamily: 'Roboto', textAlign: 'center' }}>
-          {type === 'parent'
-            ? `${relevant.firstName} is cleared to come to Crossroads on ${date}`
-            : `You are cleared for ${date}`}
-        </Typography>
-      </Box>
-    </Box>
+        <Typography variant='body1'>Best,</Typography>
+        <Typography variant='body1'>Crossroads</Typography>
+      </Paper>
+    </Grid>
   );
 }

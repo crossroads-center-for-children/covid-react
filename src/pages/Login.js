@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Paper, TextField, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/puzzlepiece.png';
@@ -14,18 +14,18 @@ import { navbarHeight } from '../components/Navbar';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100vw',
-    height: '100vh',
+    backgroundColor: '#171c28',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: navbarHeight,
+    padding: '0px 20px',
+    height: '100vh',
   },
 
   paper: {
     padding: 10,
-    minWidth: 300,
+    minWidth: 280,
   },
 
   form__box: {
@@ -50,9 +50,9 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   const classes = useStyles();
-  // const history = useHistory();
+  const navigate = useNavigate();
 
-  // const user = useSelector(state => state.auth.user) || false;
+  const user = useSelector(state => state.auth.user);
 
   const dispatch = useDispatch();
 
@@ -77,16 +77,9 @@ export default function Login() {
       localStorage.setItem('token', token);
 
       dispatch(setUser(user));
-
-      console.log(user);
+      window.location.reload();
     },
   });
-
-  // useEffect(() => {
-  //   if (user) {
-  //     history.push('/dashboard');
-  //   }
-  // }, [user, history]);
 
   const handleSubmit = () => {
     console.log('hitting before mutation');
@@ -101,7 +94,7 @@ export default function Login() {
   return (
     <Box className={classes.root}>
       <Box>
-        <img src={logo} width='120px' height='120px' />
+        <img src={logo} width='150px' height='150px' />
       </Box>
       <Paper className={classes.paper}>
         <Box className={classes.form__box}>

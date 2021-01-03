@@ -13,9 +13,8 @@ export const setUser = user => ({ type: SET_USER, user });
 
 export const resetState = () => ({ type: RESET_STATE });
 
-export const reset = () => async dispatch => {
+export const logout = () => async dispatch => {
   localStorage.removeItem('token');
-  localStorage.removeItem('user');
   dispatch(resetState());
 };
 
@@ -102,6 +101,9 @@ export default function authReducer(state = initialState, action) {
       return { ...state, token: action.token };
     case SET_USER:
       return { ...state, user: action.user };
+
+    case RESET_STATE:
+      return {};
 
     default:
       return state;

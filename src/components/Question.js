@@ -119,8 +119,8 @@ export default function Question({ question, user }) {
           </FormControl>
         ) : user.type === 'parent' ? (
           <FormControl>
-            <InputLabel style={{ maxWidth: 350, minWidth: 300 }}>{question.question}</InputLabel>
-            <Select value={relevantPerson} style={{ maxWidth: 350, minWidth: 300 }} onChange={handleSelect}>
+            <InputLabel style={{ maxWidth: '100%', minWidth: '50%' }}>{question.question}</InputLabel>
+            <Select value={relevantPerson} style={{ minWidth: 200 }} onChange={handleSelect}>
               {user.children.map(child => (
                 <MenuItem value={child}>{`${child.firstName} ${child.lastName}`}</MenuItem>
               ))}

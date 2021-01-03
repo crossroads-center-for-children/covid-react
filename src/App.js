@@ -15,7 +15,7 @@ export function App({ user }) {
   const isAdmin = user && user.type === 'admin' ? true : false;
 
   const routing = useRoutes(routes(isLoggedIn, isAdmin));
-
+  console.log(isLoggedIn);
   if (isLoggedIn === null) return null;
 
   return <>{routing}</>;
@@ -55,6 +55,7 @@ export default function AppWrapper() {
     const token = localStorage.getItem('token');
     console.log('going to validate token', token);
     if (token) validateToken({ variables: { token } });
+    else setCurUser(false);
   }, [validateToken]);
 
   if (curUser === null) return null;

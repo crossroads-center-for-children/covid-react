@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// import { useHistory } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Paper, Typography } from '@material-ui/core';
 import error from '../../images/error.svg';
 import { navbarHeight } from '../../components/Navbar';
 
@@ -14,7 +13,6 @@ export default function Fail() {
   const [relevant, setRelevant] = useState(null);
   const [date, setDate] = useState(null);
 
-  // const history = useHistory();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,44 +28,58 @@ export default function Fail() {
   if (!type) return null;
 
   return (
-    <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-      <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minWidth: 300,
-          maxWidth: 500,
-          marginTop: navbarHeight,
-          padding: 20,
-        }}>
-        <img src={error} style={{ width: 70, marginBottom: 20 }} />
+    <Grid
+      container
+      direction='column'
+      justify='space-between'
+      alignItems='center'
+      style={{
+        width: '100vw',
+        minHeight: `calc(100vh - 75px)`,
+        backgroundColor: '#171c28',
+        marginTop: 75,
+        paddingTop: 75,
+      }}>
+      <img src={error} style={{ width: 80 }} />
+      <Typography
+        variant='h4'
+        style={{ fontWeight: 'bold', fontFamily: 'Roboto', textAlign: 'center', color: '#f5f5f5', marginTop: 20 }}>
+        Oh no!
+      </Typography>
 
-        <Typography variant='h5' style={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>
-          Oh no!
-        </Typography>
-
-        <Box style={{ fontFamily: 'Roboto' }}>
-          <Box>
+      <Paper style={{ fontFamily: 'Roboto', margin: 30, padding: 20 }}>
+        <Grid container direction='column' justify='space-between' alignItems='center'>
+          <Box style={{ padding: 20 }}>
+            <Typography variant='body1'>{`${user.firstName},`}</Typography>
             <br></br>
-            <Typography>
+            <Typography variant='body1'>
               <span>{type === 'parent' ? `${relevant.firstName} is not ` : `You are not `}</span>cleared to come to
               Crossroads on {date}.
             </Typography>
             <br></br>
-            <Typography>The appropriate people at Crossroads are being notified.</Typography>
+            <Typography variant='body1'>
+              {type === 'parent'
+                ? `We just notified ${relevant.firstName}'s teachers and our front office.`
+                : `We just notified the front office.`}
+            </Typography>
             <br></br>
-            <Typography>
+            <Typography variant='body1'>
               Please contact your primary care physician or{' '}
               <span>
                 <a href='https://coronavirus.health.ny.gov/home'>State Department of Health </a>
               </span>
               for further instruction.
             </Typography>
+            <br></br>
+            <Typography variant='body1'>
+              {type === 'parent' ? `We hope ${relevant.firstName} feels better soon!` : `We hope you feel better soon!`}
+            </Typography>
+            <br></br>
+            <Typography variant='body1'>Best,</Typography>
+            <Typography variant='body1'>Crossroads</Typography>
           </Box>
-        </Box>
-      </Box>
-    </Box>
+        </Grid>
+      </Paper>
+    </Grid>
   );
 }

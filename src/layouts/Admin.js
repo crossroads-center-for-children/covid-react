@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, Route, Routes, Switch } from 'react-router-dom';
 import { Box, Button, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 
-import { navbarHeight } from '../components/Navbar';
+import { navbarHeight } from '../components/styles/Navbar.styles';
 
 import { useStyles } from './styles/Admin.styles';
 import logo from '../images/puzzlepiece.png';
@@ -14,6 +14,7 @@ export default function Admin({ user }) {
     ['📊', 'Dashboard', '/a/admin', false],
     ['🗄️', 'Responses', '/a/admin/responses', false],
     ['🚌', 'Students', '/a/admin/students', false],
+    ['👪', 'Parents', '/a/admin/parents', false],
     ['🧑‍⚕️', 'Staff', '/a/admin/staff', false],
   ];
 

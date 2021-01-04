@@ -10,7 +10,8 @@ import configureStore from './store/configureStore';
 import AppWrapper from './App';
 import './sass/index.scss';
 
-const link = createHttpLink({ uri: `${process.env.API_URL}/graphql` });
+console.log(process.env.REACT_APP_API_URL);
+const link = createHttpLink({ uri: `${process.env.REACT_APP_API_URL}/graphql` });
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({

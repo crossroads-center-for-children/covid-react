@@ -1,5 +1,5 @@
 import axios from 'axios';
-const root = process.env.API_URL || 'http://localhost:5000';
+const root = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 export async function createAnswer(response, question, value) {
   const res = await axios.post(`${root}/graphql`, {

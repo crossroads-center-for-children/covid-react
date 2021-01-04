@@ -1,5 +1,5 @@
 import axios from 'axios';
-const root = process.env.API_URL || 'http://localhost:5000';
+const root = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const SET_TOKEN = 'auth/SET_TOKEN';
 const SET_USER = 'auth/SET_USER';
 const RESET_STATE = 'auth/RESET';

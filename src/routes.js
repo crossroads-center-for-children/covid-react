@@ -114,7 +114,7 @@ const routes = (isLoggedIn, isAdmin) => [
             ],
           },
           {
-            path: 'reset',
+            path: 'reset/:token',
             element: (
               <>
                 <ResetPassword />

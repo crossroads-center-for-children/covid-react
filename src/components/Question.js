@@ -128,8 +128,8 @@ export default function Question({ question, user }) {
           </FormControl>
         ) : (
           <FormControl>
-            <InputLabel>{question.question}</InputLabel>
-            <Select value={relevantPerson}>
+            <InputLabel style={{ maxWidth: '100%', minWidth: '50%' }}>{question.question}</InputLabel>
+            <Select value={relevantPerson} style={{ minWidth: 200 }} onChange={handleSelect}>
               <MenuItem value={user}>{`${user.firstName} ${user.lastName}`}</MenuItem>
             </Select>
           </FormControl>

@@ -23,7 +23,7 @@ export default function Covid() {
   const answers = useSelector(state => state.response.answers);
 
   const { loading, error, data } = useQuery(GET_QUESTIONNAIRE_BY_TYPE, {
-    variables: { type: 'parent' },
+    variables: { type: user.type },
   });
 
   const [createResponse] = useMutation(CREATE_RESPONSE, {
@@ -39,6 +39,7 @@ export default function Covid() {
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       const questions = [data.questionnaire.questions[0], { type: 'date' }, ...data.questionnaire.questions.slice(1)];
       setQuestions(questions);
       dispatch(setDefaultAnswers(questions));
@@ -131,8 +132,8 @@ export default function Covid() {
           color='primary'
           disabled={
             response.hasOwnProperty('answers') &&
-            (response.answers['5fee247835e1c2536bbb0ed1'] === true ||
-              response.answers['5fee270e50c8a355f102a23d'] === true)
+            (response.answers['5fee270e50c8a355f102a23d'] === true ||
+              response.answers['5fee270f50c8a355f102a245'] === true)
               ? false
               : true
           }>

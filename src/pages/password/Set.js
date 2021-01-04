@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Paper, Typography, TextField } from '@material-ui/core';
+import { Box, Button, Grid, Paper, Typography, TextField } from '@material-ui/core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/client';
@@ -74,46 +74,37 @@ export default function Set() {
 
   if (tokenIsValid === false)
     return (
-      <Box
+      <Grid
+        container
+        direction='column'
+        justify='flex-start'
+        alignItems='center'
         style={{
-          marginTop: navbarHeight,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          width: '99vw',
-          height: `calc(99vh - ${navbarHeight}px)`,
-          padding: '100px 0px',
+          width: '100vw',
+          minHeight: `calc(100vh - 75px)`,
+          backgroundColor: '#171c28',
+          marginTop: 75,
+          paddingTop: 75,
         }}>
-        <Box
-          style={{
-            minWidth: 300,
-            maxWidth: 600,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <img src={error} style={{ maxWidth: 300 }} />
-          <Box style={{ marginTop: 20 }}>
-            <Typography variant='h6' style={{ fontFamily: 'Roboto' }}>
-              This link is invalid or has expired.
-            </Typography>
-          </Box>
+        <img src={error} style={{ maxWidth: 300 }} />
+        <Box style={{ marginTop: 20 }}>
+          <Typography variant='h6' style={{ fontFamily: 'Roboto' }}>
+            This link is invalid or has expired.
+          </Typography>
         </Box>
-      </Box>
+      </Grid>
     );
 
   return (
-    <Box
+    <Grid
+      container
+      direction='column'
+      justify='center'
+      alignItems='center'
       style={{
-        marginTop: navbarHeight,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
         width: '100vw',
-        height: `calc(100vh - ${navbarHeight}px)`,
+        minHeight: `calc(100vh)`,
+        backgroundColor: '#171c28',
       }}>
       <Paper
         style={{
@@ -121,17 +112,18 @@ export default function Set() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          minWidth: 300,
+          minWidth: 280,
           maxWidth: '40%',
-          minHeight: 300,
-          maxHeight: 600,
-          padding: 20,
+          minHeight: 280,
+          maxHeight: '40%',
+          padding: 10,
         }}>
-        <Typography variant='h5' style={{ fontFamily: 'Roboto', fontWeight: 'bold' }}>
+        <Typography variant='h4' style={{ fontFamily: 'Roboto', width: '70%', fontWeight: 'bold', margin: 10 }}>
           Welcome!
         </Typography>
-        <Typography variant='body1' style={{ fontFamily: 'Roboto', width: '70%' }}>
-          Please set your password. We will redirect you afterward.
+
+        <Typography variant='caption' style={{ fontFamily: 'Roboto', width: '70%', margin: 10 }}>
+          Please set your password.
         </Typography>
 
         <TextField
@@ -150,10 +142,15 @@ export default function Set() {
           fullWidth
           style={{ margin: '10px 0px', width: '70%' }}></TextField>
 
-        <Button variant='contained' color='primary' fullWidth onClick={handleClick} style={{ width: '70%' }}>
+        <Button
+          variant='contained'
+          color='primary'
+          fullWidth
+          onClick={handleClick}
+          style={{ width: '70%', margin: 10 }}>
           Set Password
         </Button>
       </Paper>
-    </Box>
+    </Grid>
   );
 }

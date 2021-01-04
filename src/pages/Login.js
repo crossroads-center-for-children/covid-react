@@ -120,8 +120,10 @@ export default function Login() {
           </Button>
         </Box>
         <Box>
-          <Link to='/forgot'>
-            <Typography style={{ fontFamily: 'Roboto' }}>Forgot Password?</Typography>
+          <Link to='/p/forgot'>
+            <Typography variant='body2' style={{ fontFamily: 'Roboto', textAlign: 'center', marginTop: 10 }}>
+              Forgot Password?
+            </Typography>
           </Link>
         </Box>
       </Paper>

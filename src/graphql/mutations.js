@@ -87,6 +87,14 @@ export const SET_PASSWORD = gql`
   }
 `;
 
+export const FORGOT_PASSWORD = gql`
+  mutation forgotPassword($email: String) {
+    forgotPassword(email: $email) {
+      id
+    }
+  }
+`;
+
 export const CREATE_RESPONSE = gql`
   mutation createResponse($date: String, $user: ID, $student: ID) {
     createResponse(date: $date, user: $user, student: $student) {

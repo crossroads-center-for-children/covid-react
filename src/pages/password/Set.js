@@ -81,17 +81,23 @@ export default function Set() {
         alignItems='center'
         style={{
           width: '100vw',
-          minHeight: `calc(100vh - 75px)`,
+          minHeight: `calc(100vh)`,
           backgroundColor: '#171c28',
-          marginTop: 75,
-          paddingTop: 75,
         }}>
-        <img src={error} style={{ maxWidth: 300 }} />
-        <Box style={{ marginTop: 20 }}>
-          <Typography variant='h6' style={{ fontFamily: 'Roboto' }}>
-            This link is invalid or has expired.
-          </Typography>
-        </Box>
+        <img src={error} style={{ minWidth: 100, marginTop: 100 }} />
+
+        <Typography
+          variant='h6'
+          style={{
+            fontFamily: 'Roboto',
+            color: '#f5f5f5',
+            fontWeight: 'bold',
+            maxWidth: '70%',
+            textAlign: 'center',
+            marginTop: 20,
+          }}>
+          This link is invalid or has expired.
+        </Typography>
       </Grid>
     );
 

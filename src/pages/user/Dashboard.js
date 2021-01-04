@@ -49,14 +49,7 @@ export default function Dashboard() {
 
       <Popover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose}>
         <Box>
-          <QRCode
-            size={200}
-            value={
-              process.env.NODE_ENV === 'production'
-                ? 'https://crossroads-center.herokuapp.com/a/covid'
-                : 'http://localhost:3000/a/covid'
-            }
-          />
+          <QRCode size={200} value={'https://crossroads-center.herokuapp.com/a/covid'} />
         </Box>
       </Popover>
     </Box>

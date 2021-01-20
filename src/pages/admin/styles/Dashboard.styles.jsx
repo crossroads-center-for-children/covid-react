@@ -8,5 +8,6 @@ export const useStyles = makeStyles(theme => ({
     marginLeft: drawerWidth,
     width: `calc(100vw = ${drawerWidth}px)`,
     height: `calc(100vh - ${navbarHeight}px)`,
+    padding: 20,
   },
 }));

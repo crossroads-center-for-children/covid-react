@@ -58,9 +58,7 @@ export default function Fail() {
             </Typography>
             <br></br>
             <Typography variant='body1'>
-              {type === 'parent'
-                ? `We just notified ${relevant.firstName}'s teachers and our front office.`
-                : `We just notified the front office.`}
+              {type === 'parent' ? `We just notified Crossroads.` : `We just notified Crossroads.`}
             </Typography>
             <br></br>
             <Typography variant='body1'>

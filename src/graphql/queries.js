@@ -81,3 +81,21 @@ export const GET_PARENTS = gql`
     }
   }
 `;
+
+export const GET_SCREENINGS_TODAY = gql`
+  query($date: String) {
+    responses(where: { date: $date }) {
+      id
+      submitted
+      date
+      user
+      answers {
+        id
+        value
+        question
+      }
+      student
+      status
+    }
+  }
+`;

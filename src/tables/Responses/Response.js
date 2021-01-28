@@ -46,7 +46,13 @@ export default function Response({ response }) {
         </TableCell>
 
         <TableCell component='th' scope='row'>
-          {response.status ? response.status.toUpperCase() : 'N/A'}
+          {response.status === 'pass' ? (
+            <i class='fas fa-check-circle fa-lg' style={{ color: 'green' }}></i>
+          ) : response.status === 'fail' ? (
+            <i class='fas fa-times-circle fa-lg' style={{ color: 'red' }}></i>
+          ) : (
+            <i class='fas fa-exclamation-triangle fa-lg' style={{ color: 'orange' }}></i>
+          )}
         </TableCell>
       </TableRow>
 

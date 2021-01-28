@@ -4,10 +4,10 @@ import { drawerWidth } from '../../../layouts/styles/Admin.styles';
 
 export const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: navbarHeight,
     marginLeft: drawerWidth,
-    width: `calc(100vw = ${drawerWidth}px)`,
-    height: `calc(100vh - ${navbarHeight}px)`,
+    width: `calc(100vw - ${drawerWidth}px - 40px)`,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
   table: {

@@ -13,8 +13,8 @@ export const GET_QUESTIONNAIRE_BY_TYPE = gql`
 `;
 
 export const GET_RESPONSES_LIMIT = gql`
-  query($limit: Int) {
-    responses(limit: $limit) {
+  query($limit: Int, $page: Int) {
+    responses(limit: $limit, page: $page) {
       id
       submitted
       date
@@ -31,8 +31,8 @@ export const GET_RESPONSES_LIMIT = gql`
 `;
 
 export const GET_STUDENTS_LIMIT = gql`
-  query($limit: Int) {
-    students(limit: $limit) {
+  query($limit: Int, $page: Int) {
+    students(limit: $limit, page: $page) {
       id
       firstName
       lastName

@@ -12,11 +12,14 @@ import { Link } from 'react-router-dom';
 
 export default function StudentsPage() {
   const classes = useStyles();
-  const { loading, error, data } = useQuery(GET_STUDENTS_LIMIT, { variables: { limit: 10 } });
+
+  const [page, setPage] = useState(1);
+
+  const { loading, error, data } = useQuery(GET_STUDENTS_LIMIT, { variables: { limit: 10, page } });
 
   if (loading)
     return (
-      <Box>
+      <Box style={{ marginLeft: drawerWidth, width: '100vw', paddingLeft: 50 }}>
         <BeatLoader loading={loading} size={20} color={'#B39DDB'} style={{ marginLeft: drawerWidth }} />
       </Box>
     );
@@ -25,7 +28,7 @@ export default function StudentsPage() {
 
   return (
     <Box className={classes.root}>
-      <Typography variant='h5' style={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>
+      <Typography variant='h4' style={{ fontWeight: 'bold', fontFamily: 'Roboto', marginBottom: 20 }}>
         Students
       </Typography>
 
@@ -34,10 +37,18 @@ export default function StudentsPage() {
           <Students students={data.students} />
         ) : (
           <Box>
-            <Typography>No responses were found.</Typography>
+            <Typography>No students were found.</Typography>
           </Box>
         )}
       </Box>
+
+      <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
+        Prev
+      </Button>
+
+      <Button onClick={() => setPage(page + 1)} disabled={data.students.length < 10}>
+        Next
+      </Button>
     </Box>
   );
 }

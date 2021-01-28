@@ -44,7 +44,7 @@ export default function Students({ student }) {
         </TableCell>
         <TableCell component='th' scope='row'>
           {student.tags.map(tag => (
-            <Chip label={tag} />
+            <Chip label={tag} size='small' style={{ marginRight: 2, marginLeft: 2 }} />
           ))}
         </TableCell>
         <TableCell component='th' scope='row'>

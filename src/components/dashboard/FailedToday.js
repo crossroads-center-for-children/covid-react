@@ -28,7 +28,16 @@ export default function FailedToday({ responses }) {
           </Button>
           <Popover open={isOpen} onClose={handleClose} anchorEl={anchorEl}>
             <Box>
-              <Typography>{responsesThatFailed.map(response => response.user).join(', ')}</Typography>
+              <Typography>
+                {Object.entries(
+                  responsesThatFailed.reduce((accum, response) => {
+                    if (!accum[response.user]) accum[response.user] = response;
+                    return accum;
+                  }, {})
+                )
+                  .map(response => response[1].user)
+                  .join(', ')}
+              </Typography>
             </Box>
           </Popover>
         </Box>

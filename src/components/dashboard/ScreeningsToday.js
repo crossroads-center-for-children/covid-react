@@ -25,7 +25,16 @@ export default function ScreeningsToday({ responses }) {
           </Button>
           <Popover open={isOpen} onClose={handleClose} anchorEl={anchorEl}>
             <Box>
-              <Typography>{responses.map(response => response.user).join(', ')}</Typography>
+              <Typography>
+                {Object.entries(
+                  responses.reduce((accum, response) => {
+                    if (!accum[response.user]) accum[response.user] = response;
+                    return accum;
+                  }, {})
+                )
+                  .map(response => response[1].user)
+                  .join(', ')}
+              </Typography>
             </Box>
           </Popover>
         </Box>

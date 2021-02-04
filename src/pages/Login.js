@@ -58,7 +58,6 @@ export default function Login() {
 
   const [login] = useMutation(LOGIN_USER, {
     onCompleted(data) {
-      console.log(data);
       const {
         id,
         firstName,
@@ -79,10 +78,13 @@ export default function Login() {
       dispatch(setUser(user));
       window.location.reload();
     },
+
+    onError(err) {
+      alert('Invalid email or password.');
+    },
   });
 
   const handleSubmit = () => {
-    console.log('hitting before mutation');
     login({
       variables: {
         email,

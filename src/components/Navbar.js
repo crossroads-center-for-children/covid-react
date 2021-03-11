@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useStyles } from './styles/Navbar.styles';
 import crossroads from '../images/crossroads.svg';
 import Avatar from './Avatar';
+import AdminActions from './AdminActions';
 
 export const navbarHeight = 100;
 
@@ -19,6 +20,7 @@ export default function Navbar() {
       <Link to='/'>
         <img src={crossroads} style={{ width: 125, display: user.type === 'admin' ? 'none' : 'block' }} />
       </Link>
+      <Box>{user.type === 'admin' ? <AdminActions /> : null}</Box>
       <Box>{user ? <Avatar user={user} /> : null}</Box>
     </AppBar>
   );

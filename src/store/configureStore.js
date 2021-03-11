@@ -4,8 +4,9 @@ import thunk from 'redux-thunk';
 
 import auth from './auth';
 import response from './response';
+import admin from './admin';
 
-const rootReducer = combineReducers({ auth, response });
+const rootReducer = combineReducers({ auth, response, admin });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const storeEnhancer = composeEnhancers(applyMiddleware(thunk));

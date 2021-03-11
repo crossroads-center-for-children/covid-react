@@ -110,3 +110,15 @@ export const CREATE_RESPONSE = gql`
     }
   }
 `;
+
+export const CREATE_USER = gql`
+  mutation createUser($firstName: String, $lastName: String, $email: String, $phone: String, $type: String) {
+    createUser(firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, type: $type) {
+      id
+      firstName
+      lastName
+      email
+      phone
+    }
+  }
+`;

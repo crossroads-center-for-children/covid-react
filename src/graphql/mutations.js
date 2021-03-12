@@ -122,3 +122,11 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+export const CREATE_STUDENT = gql`
+  mutation createStudent($firstName: String, $lastName: String, $room: String, $tags: JSON, $parents: JSON) {
+    createStudent(firstName: $firstName, lastName: $lastName, room: $room, tags: $tags, parents: $parents) {
+      id
+    }
+  }
+`;
